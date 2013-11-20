@@ -1,7 +1,7 @@
 import numpy as np
-a = np.array([1, 0])
-b = np.array([0, 1])
-print(np.cross(a, b))
+import math
+import random
+import pylab
 
 
 def orderPoints(points):
@@ -16,7 +16,22 @@ def orderPoints(points):
             leftMost = p
 
     def sortFunction(vertex):
-        v = np.array([vertex[0] - leftMost[0], [vertex[1] - leftMost[1]]])
-        return np.cross(np.array([1, 0], v))
+        v = np.array([vertex[0] - leftMost[0], vertex[1] - leftMost[1]])
+        v = v / np.linalg.norm(v)
+        return np.cross(np.array([1, 0]), v)
 
-    return sorted(points, sortFunction)
+    return sorted(points, key=sortFunction)
+
+
+points = []
+for i in range(2 * math.floor(math.pi * 10)):
+    points.append(np.array([math.cos(i / 10), math.sin(i / 10)]))
+random.shuffle(points)
+X = []
+Y = []
+for p in orderPoints(points):
+    X.append(p[0])
+    Y.append(p[1])
+
+pylab.plot(X, Y)
+pylab.show()
